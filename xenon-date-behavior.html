@@ -1,0 +1,68 @@
+﻿<link rel="import" href="../polymer/polymer.html" />
+
+<script>
+    window.ACAXLabs = window.ACAXLabs || {};
+    ACAXLabs.XenonDateBehavior = {
+        getDateTimeString: function (val, inUtc) {
+            return this.getDateString(val, inUtc) + ' ' + this.getTimeString(val, inUtc);
+        },
+        getDateString: function (val, inUtc) {
+            val = new Date(val);
+            var parts = (inUtc) ? this.getUtcParts(val) : this.getLocalParts(val);
+            return this.pad(parts.month) + "-" + this.pad(parts.day) + "-" + parts.year;
+        },
+        getTimeString: function (val, inUtc) {
+            val = new Date(val);
+            var parts = (inUtc) ? this.getUtcParts(val) : this.getLocalParts(val);
+            parts.ampm = parts.hours >= 12 ? 'pm' : 'am';
+            parts.hours = parts.hours % 12;
+            if (parts.hours == 0) parts.hours = 12;
+            return this.pad(parts.hours) + ":" + this.pad(parts.minutes) + " " + parts.ampm;
+        },
+        pad: function (value) {
+            return (value.toString().length == 2) ? value.toString() : "0" + value.toString();
+        },
+        getDaysBetween: function (date1, date2) {
+            //Get 1 day in milliseconds
+            var one_day = 1000 * 60 * 60 * 24;
+
+            // Convert both dates to milliseconds
+            var date1_ms = date1.getTime();
+            var date2_ms = date2.getTime();
+
+            // Calculate the difference in milliseconds
+            var difference_ms = date2_ms - date1_ms;
+
+            // Convert back to days and return
+            return Math.round(difference_ms / one_day);
+        },
+        getLocalParts: function (date) {
+            return {
+                year: date.getFullYear(),
+                month: date.getMonth() + 1,
+                day: date.getDate(),
+                hours: date.getHours(),
+                minutes: date.getMinutes()
+            };
+        },
+        getUtcParts: function (date) {
+            return {
+                year: date.getUTCFullYear(),
+                month: date.getUTCMonth() + 1,
+                day: date.getUTCDate(),
+                hours: date.getUTCHours(),
+                minutes: date.getUTCMinutes()
+            };
+        },
+        getMonthNameLong: function (date) {
+            var locale = "en-us";
+            var month = date.toLocaleString(locale, { month: "long" });
+            return month;
+        },
+        getMonthNameShort: function (date) {
+            var locale = "en-us";
+            var month = date.toLocaleString(locale, { month: "short" });
+            return month;
+        }
+    }
+</script>
