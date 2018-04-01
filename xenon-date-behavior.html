@@ -1,4 +1,4 @@
-﻿<link rel="import" href="../polymer/polymer.html" />
+<link rel="import" href="../polymer/polymer.html" />
 
 <script>
     window.ACAXLabs = window.ACAXLabs || {};
@@ -63,6 +63,24 @@
             var locale = "en-us";
             var month = date.toLocaleString(locale, { month: "short" });
             return month;
+        },
+        isDateInRange: function (value, mindate, maxdate) {
+            var enteredDate = new Date(value);
+            var minDate = new Date(mindate);
+            var maxDate = new Date(maxdate);
+            enteredDate.setHours(0, 0, 0, 0);
+            minDate.setHours(0, 0, 0, 0);
+            maxDate.setHours(0, 0, 0, 0);
+            var booMin = (enteredDate >= minDate);
+            var booMax = (enteredDate <= maxDate);
+            return booMin && booMax;
+        },
+        getDateDiff: function (a, b) {
+            a = new Date(a.getTime());
+            b = new Date(b.getTime());
+            a.setHours(0, 0, 0, 0);
+            b.setHours(0, 0, 0, 0);
+            return (a.getTime() - b.getTime()) / 86400000;
         }
     }
 </script>
